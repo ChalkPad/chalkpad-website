@@ -10,6 +10,7 @@ import {
   Minimize2,
   Camera,
   ArrowLeft,
+  ImageIcon,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
@@ -48,6 +49,11 @@ const ChatBotPage = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const boardContainerRef = useRef<BoardContainerHandle>(null);
 
+  const [showCamera, setShowCamera] = useState(false);
+  const [isCameraAvailable, setIsCameraAvailable] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const thinkingQuotes = [
     "Let me think about that...",
     "Analyzing your question...",
@@ -59,6 +65,14 @@ const ChatBotPage = () => {
     "Calculating possibilities...",
     "Finding the perfect explanation...",
   ];
+
+  useEffect(() => {
+    // Check if camera is available
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then(() => setIsCameraAvailable(true))
+      .catch(() => setIsCameraAvailable(false));
+  }, []);
 
   // Add initial greeting when component mounts
   useEffect(() => {
@@ -101,6 +115,73 @@ const ChatBotPage = () => {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isThinking]);
+
+  // Add these functions after your other handler functions
+
+  const startCamera = async () => {
+    setShowCamera(true);
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" }, // Use back camera by default
+      });
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (err) {
+      console.error("Error accessing camera:", err);
+      alert("Failed to access camera. Please check camera permissions.");
+      setShowCamera(false);
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      const tracks = stream.getTracks();
+
+      tracks.forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+
+    setShowCamera(false);
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const ctx = canvas.getContext("2d");
+      ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convert to data URL (JPEG format with 0.8 quality)
+      const photoData = canvas.toDataURL("image/jpeg", 0.8);
+
+      // Create new message with the captured photo
+      const newMessage: Message = {
+        id: Date.now().toString(),
+        content:
+          "I've taken a photo to share with you. Can you analyze this image?",
+        isBot: false,
+        timestamp: new Date(),
+        image: photoData,
+      };
+
+      setMessages((prev) => [...prev, newMessage]);
+      setIsThinking(true);
+
+      // Send photo to AI
+      handleSendWithImage(newMessage, photoData);
+
+      // Stop the camera
+      stopCamera();
+    }
+  };
 
   // Handle sending a message
   const handleSendMessage = async () => {
@@ -458,6 +539,19 @@ const ChatBotPage = () => {
                     }}
                     className="flex gap-2"
                   >
+                    {isCameraAvailable && (
+                      <Button
+                        type="button"
+                        size="icon"
+                        variant="outline"
+                        onClick={startCamera}
+                        className="hover:bg-muted"
+                        disabled={isThinking}
+                        title="Take photo"
+                      >
+                        <ImageIcon size={18} />
+                      </Button>
+                    )}
                     <Button
                       type="button"
                       size="icon"
@@ -552,6 +646,36 @@ const ChatBotPage = () => {
           </div>
         )}
       </div>
+
+      {/* Camera Modal */}
+      {showCamera && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex flex-col items-center justify-center p-4">
+          <div className="bg-background rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] flex flex-col">
+            <div className="p-4 border-b flex justify-between items-center">
+              <h3 className="font-medium">Take a Photo</h3>
+              <Button variant="ghost" size="sm" onClick={stopCamera}>
+                &times;
+              </Button>
+            </div>
+
+            <div className="relative flex-1 overflow-hidden">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="p-4 flex justify-center">
+              <Button onClick={capturePhoto}>Take Photo</Button>
+            </div>
+
+            {/* Hidden canvas for capturing */}
+            <canvas ref={canvasRef} className="hidden" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
