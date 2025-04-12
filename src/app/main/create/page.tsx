@@ -41,7 +41,7 @@ export default function CreateSet() {
                 topic. Perfect for quick study preparation.
               </p>
               <Link
-                href="/generateflashcards"
+                href="/main/generateflashcards"
                 className="inline-flex items-center py-2 px-4 bg-[#4954E0]/10 rounded-lg font-medium text-[#4954E0] hover:bg-[#4954E0]/20 transition-all group font-satoshi"
               >
                 Generate with AI
@@ -86,7 +86,7 @@ export default function CreateSet() {
                 personalized study materials and specific learning goals.
               </p>
               <Link
-                href="/manualflashcards"
+                href="/main/manualflashcards"
                 className="inline-flex items-center py-2 px-4 bg-[#4954E0]/10 rounded-lg font-medium text-[#4954E0] hover:bg-[#4954E0]/20 transition-all group font-satoshi"
               >
                 Create Manually
@@ -210,7 +210,7 @@ export default function CreateSet() {
         {/* Back to Flashcards Link */}
         <div className="mt-12">
           <Link
-            href="/flashcards"
+            href="/main/home"
             className="inline-flex items-center py-2 px-4 bg-white rounded-lg text-[#4954E0] shadow-sm hover:shadow-md transition-all font-satoshi"
           >
             <svg

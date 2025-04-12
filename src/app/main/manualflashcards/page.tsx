@@ -488,7 +488,7 @@ export default function CreateFlashcards() {
         <Box sx={{ mt: 3 }}>
           <Button
             variant="outlined"
-            href="/flashcards/create"
+            href="/main/create"
             startIcon={
               <svg
                 width="20"
