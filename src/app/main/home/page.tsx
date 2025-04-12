@@ -1,4 +1,4 @@
-import { FC } from "react";
+// import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ export default function Dashboard() {
           <ul className="space-y-3">
             <li>
               <Link
-                href="/tutor"
+                href="/main/chat"
                 className="flex items-center p-3 rounded-lg hover:bg-[#4954E0] hover:bg-opacity-10 transition-all"
               >
                 <svg
@@ -229,7 +229,7 @@ export default function Dashboard() {
                 personal AI tutor is ready to assist.
               </p>
               <Link
-                href="/tutor"
+                href="/main/chat"
                 className="inline-flex items-center font-medium"
               >
                 Start Tutoring Session
