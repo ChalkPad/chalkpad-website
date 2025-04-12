@@ -3,11 +3,15 @@
 
 @font-face {
   font-family: "Satoshi";
-  src: url("/Fonts/Satoshi-Variable.ttf") format("ttf");
-  font-weight: normal;
+  src: url("/Fonts/Satoshi-Variable.ttf") format("truetype");
+  font-weight: 300 900;
   font-style: normal;
   font-display: swap;
 }
+
+@custom-variant dark (&:is(.dark *));
+
+/* Rest of your CSS remains the same */
 
 @custom-variant dark (&:is(.dark *));
 
