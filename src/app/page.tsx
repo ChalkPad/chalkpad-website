@@ -1,10 +1,6 @@
-import { FC } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  // Save the logo to the public folder for use in the landing page
-  // Create a file at public/logo.svg using the logo design provided
-
   return (
     <main className="min-h-screen bg-[#F1F1E8] text-[#4954E0] font-satoshi">
       {/* Navigation */}
