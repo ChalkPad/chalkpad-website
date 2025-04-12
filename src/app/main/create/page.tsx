@@ -225,7 +225,7 @@ export default function CreateSet() {
                 clipRule="evenodd"
               ></path>
             </svg>
-            Back to Flashcards
+            Back to Home
           </Link>
         </div>
       </div>
