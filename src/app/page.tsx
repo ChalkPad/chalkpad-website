@@ -47,8 +47,17 @@ export default function Home() {
         </div>
 
         <div className="md:w-1/2 mt-12 md:mt-0 flex justify-center">
-          <div className="w-full max-w-md h-96 bg-[#4954E0] bg-opacity-10 rounded-2xl flex items-center justify-center">
-            <p className="text-xl font-medium">Hero Image</p>
+          <div className="w-full max-w-2xl h-[26rem] bg-[#4954E0] bg-opacity-10 rounded-2xl flex items-center justify-center overflow-hidden">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-contain rounded-2xl"
+            >
+              <source src="/videos/ChalkPadDemo.mov" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </section>
