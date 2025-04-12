@@ -32,7 +32,8 @@ export default function GenerateFlashcards() {
 
       const openai = new OpenAI({
         apiKey:
-          "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",
+            process.env.NEXT_PUBLIC_OPENAI_API_KEY ||
+            process.env.OPENAI_API_KEY,
         dangerouslyAllowBrowser: true,
       });
 
