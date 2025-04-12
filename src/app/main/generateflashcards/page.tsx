@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  Container,
   TextField,
   Slider,
   Button,
@@ -10,8 +9,7 @@ import {
   Box,
   Card,
 } from "@mui/material";
-
-import OpenAI from "openai";
+import { useRouter } from "next/navigation";
 
 interface Flashcard {
   question: string;
@@ -25,46 +23,44 @@ export default function GenerateFlashcards() {
   const [prompt, setPrompt] = useState("");
   const [generatedCards, setGeneratedCards] = useState<Flashcard[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  const router = useRouter();
+
+  // This effect prevents hydration mismatch by only rendering dynamic content client-side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleGenerate = async () => {
     try {
       setIsLoading(true);
 
-      const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-        dangerouslyAllowBrowser: true,
+      const response = await fetch("/api/flashcard", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt,
+          cardCount,
+        }),
       });
 
-      const systemPrompt = `Generate ${cardCount} flashcards about "${prompt}".
-                Each flashcard should be a JSON object with "question" and "answer" fields.
-                The response should be a valid JSON array of these objects.
-                Example format: [{"question":"Q1","answer":"A1"},{"question":"Q2","answer":"A2"}]
-                Keep answers concise and clear.`;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error: ${response.status}`);
+      }
 
-      const completion = await openai.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a helpful assistant that generates educational flashcards. Always respond with valid JSON arrays.",
-          },
-          {
-            role: "user",
-            content: systemPrompt,
-          },
-        ],
-        model: "gpt-3.5-turbo",
-        temperature: 0.7,
-        response_format: { type: "json_object" }, // Ensure JSON response
-      });
-
-      const response = completion.choices[0].message.content;
-      if (!response) throw new Error("No response from OpenAI");
+      const data = await response.json();
+      if (!data.content) throw new Error("No content in response");
 
       let cards: Flashcard[];
       try {
         // Clean the response string before parsing
-        const cleanResponse = response.trim().replace(/```json\n|\n```/g, "");
+        const cleanResponse = data.content
+          .trim()
+          .replace(/```json\n|\n```/g, "");
         const parsedResponse = JSON.parse(cleanResponse);
 
         // Handle both direct array responses and nested arrays
@@ -104,6 +100,24 @@ export default function GenerateFlashcards() {
       setIsLoading(false);
     }
   };
+
+  // Return early with minimal markup during server render or hydration
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-[#F1F1E8] py-10 px-6 md:px-10 font-satoshi">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-[#4954E0] mb-4 font-satoshi">
+              Generate Flashcards
+            </h1>
+            <p className="text-lg text-[#4954E0] opacity-70 max-w-2xl font-satoshi">
+              Loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F1F1E8] py-10 px-6 md:px-10 font-satoshi">
@@ -507,7 +521,7 @@ export default function GenerateFlashcards() {
         <Box sx={{ mt: 3 }}>
           <Button
             variant="outlined"
-            href="/main/create"
+            onClick={() => router.push("/main/create")}
             startIcon={
               <svg
                 width="20"
