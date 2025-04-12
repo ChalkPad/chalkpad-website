@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
   // Define your navigation items
   const menuItems = [
-    { label: "Home", link: "/home" },
+    { label: "Home", link: "/main" },
     { label: "About", link: "/about" },
     { label: "Features", link: "/features" },
     { label: "Contact", link: "/contact" },
