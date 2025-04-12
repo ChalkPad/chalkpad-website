@@ -16,7 +16,7 @@ export default function Dashboard() {
               height={65}
               className="mr-2"
             />
-            <span className="text-2xl font-bold">Chalkpad</span>
+            <span className="text-2xl font-bold">ChalkPad</span>
           </Link>
         </div>
 
