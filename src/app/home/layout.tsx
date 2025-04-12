@@ -54,11 +54,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* <BaseNavbar 
+        <BaseNavbar 
           logoLink="/"
           menuItems={menuItems}
           profileItems={profileItems}
-        /> */}
+        />
         <main>{children}</main>
       </body>
     </html>
