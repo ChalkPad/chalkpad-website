@@ -180,7 +180,7 @@ export default function CreateSet() {
             </div>
 
             {/* Create New Set Card */}
-            <div className="border-2 border-dashed border-[#4954E0]/30 rounded-xl p-5 flex flex-col items-center justify-center text-center hover:border-[#4954E0]/50 transition-all duration-300">
+            {/* <div className="border-2 border-dashed border-[#4954E0]/30 rounded-xl p-5 flex flex-col items-center justify-center text-center hover:border-[#4954E0]/50 transition-all duration-300">
               <div className="w-12 h-12 bg-[#4954E0]/10 rounded-full flex items-center justify-center mb-3">
                 <svg
                   className="w-6 h-6 text-[#4954E0]"
@@ -203,7 +203,7 @@ export default function CreateSet() {
               <p className="text-sm text-[#4954E0]/60 mb-0 font-satoshi">
                 Add to your collection
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 
