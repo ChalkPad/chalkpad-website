@@ -1,6 +1,76 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Add these styles for better markdown rendering */
+.prose pre {
+  @apply bg-muted p-4 rounded-md overflow-x-auto;
+}
+
+.prose code {
+  @apply text-primary bg-primary/10 px-1.5 py-0.5 rounded;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  @apply font-bold text-foreground;
+}
+
+.prose h1 {
+  @apply text-2xl;
+}
+
+.prose h2 {
+  @apply text-xl mt-6 mb-3;
+}
+
+.prose h3 {
+  @apply text-lg;
+}
+
+.prose p {
+  @apply my-3;
+}
+
+/* Add more space between sections with emojis */
+.prose p:has(+ p:first-of-type:not(:empty)) {
+  @apply mb-4;
+}
+
+/* Make emojis slightly larger */
+.prose p:first-of-type:not(:empty) {
+  @apply text-lg;
+}
+
+.prose ul,
+.prose ol {
+  @apply pl-6;
+}
+
+.prose ul {
+  @apply list-disc;
+}
+
+.prose ol {
+  @apply list-decimal;
+}
+
+.prose ul li,
+.prose ol li {
+  @apply my-2;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-primary/30 pl-4 italic;
+}
+
+/* Style for math display */
+.katex-display {
+  @apply my-4 overflow-x-auto;
+  max-width: 100%;
+}
+
 @font-face {
   font-family: "Satoshi";
   src: url("/Fonts/Satoshi-Variable.ttf") format("truetype");
@@ -125,6 +195,18 @@
 }
 
 @layer base {
+  :root {
+    --background: 60 18% 94%;
+    --foreground: 235 73% 58%;
+
+    --primary: 235 73% 58%;
+    --primary-foreground: 60 18% 94%;
+
+    --card: 60 18% 94%;
+    --card-foreground: 235 73% 58%;
+
+    /* Add other variables as needed */
+  }
   * {
     @apply border-border outline-ring/50;
   }
