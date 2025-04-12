@@ -1,16 +1,25 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: ["class"],
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   theme: {
+    // Your existing theme configuration
+
     extend: {
       fontFamily: {
         satoshi: ["Satoshi", "sans-serif"],
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"), // Add this line
+  ],
 };
