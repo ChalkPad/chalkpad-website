@@ -14,7 +14,7 @@ export default function Home() {
             height={75}
             className="mr-3"
           />
-          <span className="text-3xl font-bold">Chalkpad</span>
+          <span className="text-3xl font-bold">ChalkPad</span>
         </div>
 
         <Link href="/main/home">
