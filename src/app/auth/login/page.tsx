@@ -8,7 +8,7 @@ export default function Login() {
       <nav className="container mx-auto py-8 px-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <Image
-            src="/ChalkPadLogoClear.png"
+            src="/clear-logo.png"
             alt="Chalkpad Logo"
             width={75}
             height={75}

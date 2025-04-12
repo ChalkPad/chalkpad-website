@@ -10,7 +10,7 @@ export default function Dashboard() {
         <div className="flex items-center mb-10">
           <Link href="/" className="flex items-center">
             <Image
-              src="/ChalkPadLogoClear.png"
+              src="/clear-logo.png"
               alt="Chalkpad Logo"
               width={65}
               height={65}

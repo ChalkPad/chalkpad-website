@@ -8,7 +8,7 @@ export default function Home() {
       <nav className="container mx-auto py-8 px-4 flex justify-between items-center">
         <div className="flex items-center">
           <Image
-            src="/ChalkPadLogoClear.png"
+            src="/clear-logo.png"
             alt="Chalkpad Logo"
             width={75}
             height={75}
@@ -94,7 +94,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
             <Image
-              src="/ChalkPadLogoClear.png"
+              src="/clear-logo.png"
               alt="Chalkpad Logo"
               width={36}
               height={36}
