@@ -1,7 +1,7 @@
 /* filepath: /Users/rishisuryavanshi/Desktop/chalkpad-website/src/app/layout.tsx */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { BaseNavbar } from "@/components/navbar"; // Import your navbar component
 
 // Initialize the Geist fonts
@@ -58,11 +58,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <BaseNavbar
+        {/* <BaseNavbar
           logoLink="/"
           menuItems={menuItems}
           profileItems={profileItems}
-        />
+        /> */}
         <main>{children}</main>
       </body>
     </html>
