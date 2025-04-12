@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,9 +17,11 @@ export default function Home() {
           <span className="text-3xl font-bold">Chalkpad</span>
         </div>
 
-        <button className="bg-[#4954E0] text-[#F1F1E8] px-6 py-2 rounded-full font-medium hover:bg-opacity-90 transition-all">
-          Sign Up
-        </button>
+        <Link href="/main/home">
+          <button className="bg-[#4954E0] text-[#F1F1E8] px-6 py-2 rounded-full font-medium hover:bg-opacity-90 transition-all">
+            Sign Up
+          </button>
+        </Link>
       </nav>
 
       {/* Hero Section */}
@@ -32,14 +35,17 @@ export default function Home() {
             and provides tailored guidance the moment you need it.
           </p>
           <div className="flex space-x-4 pt-4">
-            <button className="bg-[#4954E0] text-[#F1F1E8] px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-all">
-              Get Started
-            </button>
+            <Link href="/main/home">
+              <button className="bg-[#4954E0] text-[#F1F1E8] px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-all">
+                Get Started
+              </button>
+            </Link>
             <button className="border-2 border-[#4954E0] px-8 py-3 rounded-full font-medium hover:bg-[#4954E0] hover:text-[#F1F1E8] transition-all">
               Learn More
             </button>
           </div>
         </div>
+
         <div className="md:w-1/2 mt-12 md:mt-0 flex justify-center">
           <div className="w-full max-w-md h-96 bg-[#4954E0] bg-opacity-10 rounded-2xl flex items-center justify-center">
             <p className="text-xl font-medium">Hero Image</p>
@@ -94,7 +100,7 @@ export default function Home() {
               height={36}
               className="mr-2"
             />
-            <span className="text-2xl font-bold">Chalkpad</span>
+            <span className="text-2xl font-bold">ChalkPad</span>
           </div>
           <div className="flex space-x-6">
             <a href="#" className="hover:opacity-75 transition-opacity">
