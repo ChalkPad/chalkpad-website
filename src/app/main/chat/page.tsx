@@ -1,547 +1,282 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
+
+import Navbar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Send,
-  ChevronLeft,
-  ChevronRight,
-  Maximize2,
-  Minimize2,
-  Camera,
+  Mic,
+  FileImage,
+  Paperclip,
+  Eraser,
+  PenTool,
+  X,
 } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
+import BoardContainer from "@/components/BoardContainer";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-import "katex/dist/katex.min.css";
-import BoardContainer, {
-  BoardContainerHandle,
-} from "@/components/BoardContainer";
-
+// Message type definition
 interface Message {
   id: string;
-  content: string;
-  isBot: boolean;
+  text: string;
+  sender: "user" | "assistant";
   timestamp: Date;
-  image?: string; // Add image field to support whiteboard snapshots
 }
 
-const ChatBotPage = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+export default function ChatPage() {
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "welcome",
+      text: "Hello! How can I help with your math problems today?",
+      sender: "assistant",
+      timestamp: new Date(),
+    },
+  ]);
   const [inputValue, setInputValue] = useState("");
-  const [isThinking, setIsThinking] = useState(false);
-  const [currentQuote, setCurrentQuote] = useState("");
-  const [isChatCollapsed, setIsChatCollapsed] = useState(false);
-  const [isWhiteboardCollapsed, setIsWhiteboardCollapsed] = useState(false);
-  const [isWhiteboardFullScreen, setIsWhiteboardFullScreen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const boardContainerRef = useRef<BoardContainerHandle>(null);
+  const [isWhiteboardVisible, setIsWhiteboardVisible] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const boardContainerRef =
+    useRef<React.ElementRef<typeof BoardContainer>>(null);
 
-  const thinkingQuotes = [
-    "Let me think about that...",
-    "Analyzing your question...",
-    "Gathering information...",
-    "Drawing on the chalkboard of knowledge...",
-    "Connecting the dots...",
-    "Solving this problem step by step...",
-    "Computing the best answer...",
-    "Calculating possibilities...",
-    "Finding the perfect explanation...",
-  ];
-
-  // Add initial greeting when component mounts
+  // Scroll to bottom when messages change
   useEffect(() => {
-    if (messages.length === 0) {
-      const initialGreeting: Message = {
-        id: "greeting",
-        content:
-          "Hi, I'm ChalkAI, your helpful tutor! I can help you with any of your problems, especially math, science, and programming questions. What would you like to learn today?",
-        isBot: true,
-        timestamp: new Date(),
-      };
-      setMessages([initialGreeting]);
-    }
-  }, []);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-  // Rotate through quotes while thinking
-  useEffect(() => {
-    let quoteInterval: NodeJS.Timeout;
+  // Handle sending a new message
+  const handleSendMessage = () => {
+    if (inputValue.trim() === "") return;
 
-    if (isThinking) {
-      setCurrentQuote(
-        thinkingQuotes[Math.floor(Math.random() * thinkingQuotes.length)]
-      );
-
-      quoteInterval = setInterval(() => {
-        setCurrentQuote(
-          thinkingQuotes[Math.floor(Math.random() * thinkingQuotes.length)]
-        );
-      }, 3000);
-    }
-
-    return () => {
-      if (quoteInterval) clearInterval(quoteInterval);
-    };
-  }, [isThinking]);
-
-  // Auto-scroll to bottom when new messages arrive
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages, isThinking]);
-
-  // Handle sending a message
-  const handleSendMessage = async () => {
-    if (!inputValue.trim()) return;
-
+    // Add user message
     const newMessage: Message = {
       id: Date.now().toString(),
-      content: inputValue,
-      isBot: false,
+      text: inputValue,
+      sender: "user",
       timestamp: new Date(),
     };
-
     setMessages((prev) => [...prev, newMessage]);
     setInputValue("");
-    setIsThinking(true);
 
-    try {
-      const chatHistory = [...messages, newMessage].map((msg) => ({
-        content: msg.content,
-        isBot: msg.isBot,
-        image: msg.image,
-      }));
-
-      // Call your API route
-      const response = await fetch("/api/ai", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: chatHistory,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to get response from AI");
-      }
-
-      const data = await response.json();
-
-      // Check if there's an error in the response
-      if (data.error) {
-        throw new Error(data.message || data.error);
-      }
-
-      // Add bot response to chat
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        content: data.content,
-        isBot: true,
+    // Simulate assistant response after a short delay
+    setTimeout(() => {
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "I understand your question. Let me help you solve this problem!",
+        sender: "assistant",
         timestamp: new Date(),
       };
+      setMessages((prev) => [...prev, assistantMessage]);
+    }, 1000);
+  };
 
-      setMessages((prev) => [...prev, botResponse]);
-    } catch (error) {
-      console.error("Error calling AI:", error);
+  // Handle file upload click
+  const handleFileUploadClick = () => {
+    fileInputRef.current?.click();
+  };
 
-      // Add error message with more details
-      const errorMessage: Message = {
+  // Handle file change
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      // Handle file upload logic here
+      console.log("File selected:", files[0].name);
+
+      // You would normally upload the file to your server here
+      // and then add a message indicating the file was shared
+
+      const fileMessage: Message = {
         id: Date.now().toString(),
-        content: `Sorry, I encountered an error: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
-        isBot: true,
+        text: `Uploaded: ${files[0].name}`,
+        sender: "user",
         timestamp: new Date(),
       };
-
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsThinking(false);
+      setMessages((prev) => [...prev, fileMessage]);
     }
   };
 
-  // Handle capturing and sending whiteboard
-  // Update the handleCaptureWhiteboard function:
+  // Handle key press (Enter to send)
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
 
-  const handleCaptureWhiteboard = () => {
+  // Toggle whiteboard visibility
+  const toggleWhiteboard = () => {
+    setIsWhiteboardVisible(!isWhiteboardVisible);
+  };
+
+  // Capture whiteboard content and send as a message
+  const captureAndSendWhiteboard = () => {
     if (boardContainerRef.current) {
-      try {
-        const imageData = boardContainerRef.current.captureWhiteboard();
+      const imageData = boardContainerRef.current.captureWhiteboard();
+      if (imageData) {
+        // Create a message with the whiteboard content
+        const whiteboardMessage: Message = {
+          id: Date.now().toString(),
+          text: "Whiteboard diagram:",
+          sender: "user",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, whiteboardMessage]);
 
-        if (imageData) {
-          // Create new message with whiteboard image and better instructions
-          const newMessage: Message = {
-            id: Date.now().toString(),
-            content:
-              "Here's my solution from the whiteboard. Please analyze it carefully and tell me if I'm on the right track:",
-            isBot: false,
-            timestamp: new Date(),
-            image: imageData,
-          };
+        // Here you would typically send the imageData to your backend
+        console.log(
+          "Captured whiteboard data:",
+          imageData.substring(0, 50) + "..."
+        );
 
-          setMessages((prev) => [...prev, newMessage]);
-          setIsThinking(true);
-
-          // Call AI with the image data
-          handleSendWithImage(newMessage, imageData);
-        }
-      } catch (error) {
-        console.error("Error capturing whiteboard:", error);
-        alert("Failed to capture whiteboard. Please try again.");
+        // Hide the whiteboard after sending
+        setIsWhiteboardVisible(false);
       }
     }
   };
-  // Modified to handle sending messages with images
-  // Modified to handle sending messages with images
-  const handleSendWithImage = async (message: Message, imageData: string) => {
-    try {
-      const chatHistory = [...messages, message].map((msg) => ({
-        content: msg.content,
-        isBot: msg.isBot,
-        image: msg.image ? true : undefined, // Just send a flag that image exists, not the full data
-      }));
 
-      // Log image size for debugging
-      console.log("Image size (KB):", Math.round(imageData.length / 1024));
-
-      // Call your API route with image data
-      const response = await fetch("/api/ai", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: chatHistory,
-          image: imageData, // The full image data
-          format: "jpeg", // Specify the image format
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `API error: ${response.status}`);
-      }
-
-      // Process response and add bot message
-      const data = await response.json();
-
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        content: data.content,
-        isBot: true,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, botResponse]);
-    } catch (error) {
-      console.error("Error calling AI with image:", error);
-
-      const errorMessage: Message = {
-        id: Date.now().toString(),
-        content: `Sorry, I encountered an error processing your whiteboard: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
-        isBot: true,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsThinking(false);
+  // Clear the whiteboard
+  const clearWhiteboard = () => {
+    if (boardContainerRef.current) {
+      boardContainerRef.current.clearWhiteboard();
     }
-  };
-
-  // Format timestamp
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   return (
-    <div className="flex h-[calc(100vh-64px)] bg-background">
-      {/* Chat Section - hide when whiteboard is fullscreen */}
-      {!isWhiteboardFullScreen && (
-        <div
-          className={`${
-            isChatCollapsed
-              ? "w-[50px]"
-              : isWhiteboardCollapsed
-              ? "w-[calc(100%-50px)]"
-              : "w-1/2"
-          } 
-                border-r transition-all duration-300 relative flex flex-col`}
-        >
-          {/* Collapse Button for Chat */}
-          <button
-            onClick={() => setIsChatCollapsed(!isChatCollapsed)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-primary text-primary-foreground 
-                        rounded-full p-1 shadow-md hover:bg-primary/90 transition-colors"
-            aria-label={isChatCollapsed ? "Expand chat" : "Collapse chat"}
-          >
-            {isChatCollapsed ? (
-              <ChevronRight size={16} />
-            ) : (
-              <ChevronLeft size={16} />
-            )}
-          </button>
+    <div className="min-h-screen bg-[#F1F1E8] font-satoshi flex flex-col">
+      <Navbar />
 
-          {isChatCollapsed ? (
-            <div className="h-full w-full flex items-center justify-center">
-              <span className="text-primary font-semibold transform -rotate-90">
-                Chat
-              </span>
-            </div>
-          ) : (
-            <Card className="h-full flex flex-col overflow-hidden border-none rounded-none shadow-none">
-              <CardContent className="flex-1 p-0 flex flex-col h-full">
-                <ScrollArea
-                  className="flex-1 h-[calc(100%-70px)] overflow-y-auto"
-                  type="always"
-                >
-                  <div className="p-4">
-                    {messages.length === 0 ? (
-                      <div className="h-full flex flex-col items-center justify-center text-center p-8">
-                        <div className="bg-primary/10 rounded-full p-6 mb-4">
-                          <Send size={24} className="text-primary" />
-                        </div>
-                        <h3 className="text-xl font-medium text-primary">
-                          Start a conversation
-                        </h3>
-                        <p className="text-muted-foreground mt-2 max-w-sm">
-                          Type a message below to begin chatting with ChalkAI
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="space-y-4 pb-4">
-                        {messages.map((message) => (
-                          <div
-                            key={message.id}
-                            className={`flex ${
-                              message.isBot ? "justify-start" : "justify-end"
-                            }`}
-                          >
-                            <div className="flex gap-2 max-w-[80%]">
-                              {message.isBot && (
-                                <Avatar className="h-8 w-8">
-                                  <AvatarImage
-                                    src="/clear-logo.png"
-                                    alt="ChalkAI Assistant"
-                                  />
-                                  <AvatarFallback className="bg-primary/10">
-                                    <span className="text-xs text-primary font-semibold">
-                                      Chalk
-                                    </span>
-                                  </AvatarFallback>
-                                </Avatar>
-                              )}
-                              <div>
-                                <div
-                                  className={`px-4 py-3 rounded-lg ${
-                                    message.isBot
-                                      ? "bg-muted text-foreground"
-                                      : "bg-primary text-white"
-                                  }`}
-                                >
-                                  {message.isBot ? (
-                                    <div className="prose prose-sm dark:prose-invert max-w-none">
-                                      <ReactMarkdown
-                                        remarkPlugins={[remarkGfm, remarkMath]}
-                                        rehypePlugins={[rehypeKatex, rehypeRaw]}
-                                      >
-                                        {message.content}
-                                      </ReactMarkdown>
-                                    </div>
-                                  ) : (
-                                    <>
-                                      <p className="text-sm">
-                                        {message.content}
-                                      </p>
-                                      {message.image && (
-                                        <div className="mt-2">
-                                          <img
-                                            src={message.image}
-                                            alt="Whiteboard capture"
-                                            className="max-w-full rounded border border-white/20"
-                                          />
-                                        </div>
-                                      )}
-                                    </>
-                                  )}
-                                </div>
-                                <div className="text-xs text-muted-foreground mt-1 px-2">
-                                  {formatTime(message.timestamp)}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-
-                        {/* Thinking indicator */}
-                        {isThinking && (
-                          <div className="flex justify-start">
-                            <div className="flex gap-2 max-w-[80%]">
-                              <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                  src="/clear-logo.png"
-                                  alt="ChalkAI Assistant"
-                                />
-                                <AvatarFallback className="bg-primary/10">
-                                  <span className="text-xs text-primary font-semibold">
-                                    Chalk
-                                  </span>
-                                </AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <div className="px-4 py-2 rounded-lg bg-muted text-foreground">
-                                  <div className="flex items-center">
-                                    <p className="text-sm mr-2">
-                                      {currentQuote}
-                                    </p>
-                                    <span className="flex space-x-1">
-                                      <span
-                                        className="h-2 w-2 bg-primary rounded-full animate-bounce"
-                                        style={{ animationDelay: "0ms" }}
-                                      ></span>
-                                      <span
-                                        className="h-2 w-2 bg-primary rounded-full animate-bounce"
-                                        style={{ animationDelay: "150ms" }}
-                                      ></span>
-                                      <span
-                                        className="h-2 w-2 bg-primary rounded-full animate-bounce"
-                                        style={{ animationDelay: "300ms" }}
-                                      ></span>
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className="text-xs text-muted-foreground mt-1 px-2">
-                                  {formatTime(new Date())}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        <div ref={scrollRef} />
-                      </div>
-                    )}
-                  </div>
-                </ScrollArea>
-
-                <div className="p-4 border-t mt-auto">
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }}
-                    className="flex gap-2"
-                  >
-                    <Button
-                      type="button"
-                      size="icon"
-                      variant="outline"
-                      onClick={handleCaptureWhiteboard}
-                      className="hover:bg-muted"
-                      disabled={isThinking || isWhiteboardCollapsed}
-                      title="Capture whiteboard"
-                    >
-                      <Camera size={18} />
-                    </Button>
-                    <Input
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      placeholder="Type your message..."
-                      className="flex-1"
-                      disabled={isThinking}
-                    />
-                    <Button
-                      type="submit"
-                      size="icon"
-                      disabled={isThinking || !inputValue.trim()}
-                    >
-                      <Send size={18} />
-                    </Button>
-                  </form>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+      <main className="flex-1 container mx-auto max-w-5xl px-4 py-6 flex flex-col">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-[#4954E0]">Math Assistant</h1>
+          <p className="text-[#4954E0] opacity-70">
+            Ask me anything about math or upload your work for help
+          </p>
         </div>
-      )}
 
-      {/* Whiteboard Section */}
-      <div
-        className={`${
-          isWhiteboardFullScreen
-            ? "w-full h-full"
-            : isWhiteboardCollapsed
-            ? "w-[50px]"
-            : isChatCollapsed
-            ? "w-[calc(100%-50px)]"
-            : "w-1/2"
-        } 
-                transition-all duration-300 relative bg-muted/20`}
-      >
-        {/* Collapse Button for Whiteboard - hide when fullscreen */}
-        {!isWhiteboardFullScreen && (
-          <button
-            onClick={() => setIsWhiteboardCollapsed(!isWhiteboardCollapsed)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-primary text-primary-foreground 
-                        rounded-full p-1 shadow-md hover:bg-primary/90 transition-colors"
-            aria-label={
-              isWhiteboardCollapsed
-                ? "Expand whiteboard"
-                : "Collapse whiteboard"
-            }
-          >
-            {isWhiteboardCollapsed ? (
-              <ChevronLeft size={16} />
-            ) : (
-              <ChevronRight size={16} />
-            )}
-          </button>
+        {/* Whiteboard (conditionally rendered) */}
+        {isWhiteboardVisible && (
+          <Card className="mb-6 bg-white shadow-sm rounded-2xl overflow-hidden">
+            <div className="flex justify-between items-center border-b p-4">
+              <h2 className="font-bold text-[#4954E0]">Whiteboard</h2>
+              <div className="flex space-x-2">
+                <Button
+                  onClick={clearWhiteboard}
+                  variant="ghost"
+                  className="h-9 w-9 p-0 rounded-full"
+                >
+                  <Eraser size={18} />
+                </Button>
+                <Button
+                  onClick={captureAndSendWhiteboard}
+                  className="bg-[#4954E0] text-white hover:bg-opacity-90"
+                >
+                  Send
+                </Button>
+                <Button
+                  onClick={toggleWhiteboard}
+                  variant="outline"
+                  className="h-9 w-9 p-0 rounded-full border-gray-200"
+                >
+                  <X size={18} />
+                </Button>
+              </div>
+            </div>
+            <div className="h-[400px]">
+              <BoardContainer ref={boardContainerRef} />
+            </div>
+          </Card>
         )}
 
-        {/* Fullscreen Toggle Button */}
-        <button
-          onClick={() => setIsWhiteboardFullScreen(!isWhiteboardFullScreen)}
-          className="absolute right-4 top-4 z-10 bg-primary text-primary-foreground 
-                  rounded-full p-2 shadow-md hover:bg-primary/90 transition-colors"
-          aria-label={
-            isWhiteboardFullScreen ? "Exit fullscreen" : "Enter fullscreen"
-          }
-        >
-          {isWhiteboardFullScreen ? (
-            <Minimize2 size={16} />
-          ) : (
-            <Maximize2 size={16} />
-          )}
-        </button>
+        {/* Chat container */}
+        <Card className="flex-1 bg-white shadow-sm rounded-2xl mb-4 flex flex-col overflow-hidden">
+          {/* Messages area */}
+          <ScrollArea className="flex-1 p-4 h-[calc(100vh-300px)]">
+            <div className="space-y-4">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${
+                    message.sender === "user" ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  <div
+                    className={`max-w-[80%] px-4 py-3 rounded-2xl ${
+                      message.sender === "user"
+                        ? "bg-[#4954E0] text-white"
+                        : "bg-gray-100 text-[#4954E0]"
+                    }`}
+                  >
+                    {message.text}
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          </ScrollArea>
 
-        {isWhiteboardCollapsed && !isWhiteboardFullScreen ? (
-          <div className="h-full w-full flex items-center justify-center">
-            <span className="text-primary font-semibold transform -rotate-90">
-              Whiteboard
-            </span>
+          {/* Input area */}
+          <div className="border-t border-gray-200 p-4">
+            <div className="flex items-end gap-2">
+              <div className="flex-1 relative">
+                <Input
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  placeholder="Type your message..."
+                  className="min-h-[50px] py-3 px-4 pr-12 rounded-xl border border-gray-200 focus:border-[#4954E0] focus:ring-[#4954E0]/30"
+                />
+                <div className="absolute right-3 bottom-3 flex space-x-2">
+                  <button
+                    onClick={handleFileUploadClick}
+                    className="text-gray-400 hover:text-[#4954E0] transition-colors"
+                  >
+                    <Paperclip size={20} />
+                  </button>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                    accept="image/*,.pdf,.doc,.docx"
+                  />
+                </div>
+              </div>
+              <Button
+                onClick={handleSendMessage}
+                className="h-[50px] w-[50px] rounded-full bg-[#4954E0] text-white flex items-center justify-center p-0 hover:bg-opacity-90"
+              >
+                <Send size={20} />
+              </Button>
+            </div>
+
+            <div className="flex justify-center mt-4">
+              <div className="flex space-x-6 bg-gray-100 rounded-full px-6 py-2">
+                <button
+                  className="text-[#4954E0] hover:text-opacity-80 transition-colors flex items-center space-x-1"
+                  onClick={handleFileUploadClick}
+                >
+                  <FileImage size={20} />
+                  <span className="text-sm font-medium">Image</span>
+                </button>
+                <button
+                  className="text-[#4954E0] hover:text-opacity-80 transition-colors flex items-center space-x-1"
+                  onClick={toggleWhiteboard}
+                >
+                  <PenTool size={20} />
+                  <span className="text-sm font-medium">Whiteboard</span>
+                </button>
+                <button className="text-[#4954E0] hover:text-opacity-80 transition-colors flex items-center space-x-1">
+                  <Mic size={20} />
+                  <span className="text-sm font-medium">Voice</span>
+                </button>
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center p-4">
-            <BoardContainer ref={boardContainerRef} />
-          </div>
-        )}
-      </div>
+        </Card>
+      </main>
     </div>
   );
-};
-
-export default ChatBotPage;
+}
