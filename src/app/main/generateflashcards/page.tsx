@@ -32,7 +32,6 @@ export default function GenerateFlashcards() {
 
       const openai = new OpenAI({
         apiKey:
-            process.env.NEXT_PUBLIC_OPENAI_API_KEY ||
             process.env.OPENAI_API_KEY,
         dangerouslyAllowBrowser: true,
       });
