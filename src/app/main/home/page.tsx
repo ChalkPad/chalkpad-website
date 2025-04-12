@@ -40,7 +40,7 @@ export default function Dashboard() {
             </li>
             <li>
               <Link
-                href="/flashcards"
+                href="/main/create"
                 className="flex items-center p-3 rounded-lg hover:bg-[#4954E0] hover:bg-opacity-10 transition-all"
               >
                 <svg
