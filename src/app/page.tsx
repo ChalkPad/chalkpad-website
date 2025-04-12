@@ -15,20 +15,7 @@ export default function Home() {
           />
           <span className="text-3xl font-bold">Chalkpad</span>
         </div>
-        <div className="hidden md:flex space-x-8">
-          <a href="#" className="hover:opacity-75 transition-opacity">
-            Home
-          </a>
-          <a href="#" className="hover:opacity-75 transition-opacity">
-            Features
-          </a>
-          <a href="#" className="hover:opacity-75 transition-opacity">
-            About
-          </a>
-          <a href="#" className="hover:opacity-75 transition-opacity">
-            Contact
-          </a>
-        </div>
+
         <button className="bg-[#4954E0] text-[#F1F1E8] px-6 py-2 rounded-full font-medium hover:bg-opacity-90 transition-all">
           Sign Up
         </button>

@@ -11,8 +11,8 @@ export default function Dashboard() {
           <Image
             src="/ChalkPadLogoClear.png"
             alt="Chalkpad Logo"
-            width={36}
-            height={36}
+            width={65}
+            height={65}
             className="mr-2"
           />
           <span className="text-2xl font-bold">Chalkpad</span>
