@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { BaseNavbar } from "@/components/navbar"; // Import your navbar component
 
 // Initialize the Geist fonts
 const geistSans = Geist({
@@ -31,6 +32,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Define your navigation items
+  const menuItems = [
+    { label: "Home", link: "/" },
+    { label: "About", link: "/about" },
+    { label: "Features", link: "/features" },
+    { label: "Contact", link: "/contact" },
+  ];
+
+  // Define your profile items (using the TypeScript structure we created)
+  const profileItems = {
+    type: "custom" as const, // or "avatar" if you want to use the avatar dropdown
+    component: <button className="px-4 py-2 bg-primary text-white rounded">Sign In</button>
+  };
+
   return (
     <html lang="en">
       <head>
@@ -39,7 +54,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <BaseNavbar 
+          logoLink="/"
+          menuItems={menuItems}
+          profileItems={profileItems}
+        />
+        <main>{children}</main>
       </body>
     </html>
   );
