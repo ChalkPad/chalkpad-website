@@ -9,12 +9,14 @@ import {
   Maximize2,
   Minimize2,
   Camera,
+  ArrowLeft,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -270,6 +272,16 @@ const ChatBotPage = () => {
 
   return (
     <div className="flex h-[calc(100vh-64px)] bg-background">
+      <Link href="/main/home" className="absolute top-4 left-4 z-50">
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-1 bg-background/80 backdrop-blur"
+        >
+          <ArrowLeft size={16} />
+          <span>Back</span>
+        </Button>
+      </Link>
       {/* Chat Section - hide when whiteboard is fullscreen */}
       {!isWhiteboardFullScreen && (
         <div
