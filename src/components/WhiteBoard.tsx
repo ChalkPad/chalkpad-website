@@ -11,7 +11,7 @@ import { DrawingPen } from "./BoardContainer";
 
 export interface BoardHandle {
   captureWhiteboard: (quality?: number) => string | null;
-  clearWhiteboard: () => void; // Add this new method
+  clearWhiteboard: () => void;
 }
 
 interface BoardProps {
