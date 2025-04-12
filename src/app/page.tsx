@@ -11,10 +11,10 @@ export default function Home() {
       <nav className="container mx-auto py-8 px-4 flex justify-between items-center">
         <div className="flex items-center">
           <Image
-            src="/logo.svg"
+            src="/ChalkPadLogoClear.png"
             alt="Chalkpad Logo"
-            width={48}
-            height={48}
+            width={75}
+            height={75}
             className="mr-3"
           />
           <span className="text-3xl font-bold">Chalkpad</span>
@@ -42,11 +42,11 @@ export default function Home() {
       <section className="container mx-auto px-4 py-20 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 space-y-6">
           <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-            Modern solutions for your digital needs
+            Every problem has a solution. <i>Find yours.</i>
           </h1>
           <p className="text-xl opacity-80 max-w-lg">
-            Experience the seamless integration of design and functionality with
-            our innovative platform.
+            Never get stuck again with our AI companion that observes your work
+            and provides tailored guidance the moment you need it.
           </p>
           <div className="flex space-x-4 pt-4">
             <button className="bg-[#4954E0] text-[#F1F1E8] px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-all">
@@ -105,7 +105,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
             <Image
-              src="/logo.svg"
+              src="/ChalkPadLogoClear.png"
               alt="Chalkpad Logo"
               width={36}
               height={36}
