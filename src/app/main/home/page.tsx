@@ -16,7 +16,7 @@ export default function Dashboard() {
               height={65}
               className="mr-2"
             />
-            <span className="text-2xl font-bold">Chalkpad</span>
+            <span className="text-2xl font-bold">ChalkPad</span>
           </Link>
         </div>
 
@@ -234,7 +234,7 @@ export default function Dashboard() {
               >
                 Start Tutoring Session
                 <svg
-                  className="w-4 h-4 ml-2"
+                  className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -269,13 +269,14 @@ export default function Dashboard() {
                 Review and memorize concepts with intelligent flashcards that
                 adapt to your learning progress.
               </p>
+
               <Link
-                href="/flashcards"
-                className="inline-flex items-center font-medium"
+                href="/main/create"
+                className="inline-flex items-center py-2 px-4 bg-[#4954E0]/10 rounded-lg font-medium text-[#4954E0] hover:bg-[#4954E0]/20 transition-all group font-satoshi"
               >
-                Review Flashcards
+                Create Flashcards
                 <svg
-                  className="w-4 h-4 ml-2"
+                  className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
