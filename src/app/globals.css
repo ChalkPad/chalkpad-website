@@ -125,6 +125,18 @@
 }
 
 @layer base {
+  :root {
+    --background: 60 18% 94%;
+    --foreground: 235 73% 58%;
+
+    --primary: 235 73% 58%;
+    --primary-foreground: 60 18% 94%;
+
+    --card: 60 18% 94%;
+    --card-foreground: 235 73% 58%;
+
+    /* Add other variables as needed */
+  }
   * {
     @apply border-border outline-ring/50;
   }
