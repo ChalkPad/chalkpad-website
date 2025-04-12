@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { GraduationCap, Presentation, FlipVertical } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -66,35 +67,103 @@ export default function Home() {
       <section className="container mx-auto px-4 py-20">
         <h2 className="text-4xl font-bold text-center mb-16">Key Features</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[1, 2, 3].map((item) => (
-            <div
-              key={item}
-              className="bg-white bg-opacity-50 p-8 rounded-2xl hover:shadow-lg transition-all"
-            >
-              <div className="w-12 h-12 bg-[#4954E0] bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
-                <div className="w-6 h-6 bg-[#4954E0] rounded-md"></div>
-              </div>
-              <h3 className="text-2xl font-bold mb-4">Feature {item}</h3>
-              <p className="opacity-70">
-                A comprehensive solution that streamlines your workflow and
-                enhances productivity across all your devices.
-              </p>
+          {/* AI Tutoring Feature */}
+          <div className="bg-white bg-opacity-50 p-8 rounded-2xl hover:shadow-lg transition-all">
+            <div className="mb-6">
+              <GraduationCap size={48} className="text-[#4954E0]" />
             </div>
-          ))}
+            <h3 className="text-2xl font-bold mb-4">AI Tutor</h3>
+            <p className="opacity-70">
+              Get personalized help with any problem through our advanced AI
+              tutor that provides step-by-step guidance and instant feedback on
+              your work.
+            </p>
+          </div>
+
+          {/* Interactive Whiteboard Feature */}
+          <div className="bg-white bg-opacity-50 p-8 rounded-2xl hover:shadow-lg transition-all">
+            <div className="mb-6">
+              <Presentation size={48} className="text-[#4954E0]" />
+            </div>
+            <h3 className="text-2xl font-bold mb-4">Interactive Whiteboard</h3>
+            <p className="opacity-70">
+              Solve problems visually with our collaborative whiteboard that
+              lets you draw, share, and receive feedback on your work in
+              real-time.
+            </p>
+          </div>
+
+          {/* Smart Flashcards Feature */}
+          <div className="bg-white bg-opacity-50 p-8 rounded-2xl hover:shadow-lg transition-all">
+            <div className="mb-6">
+              <FlipVertical size={48} className="text-[#4954E0]" />
+            </div>
+            <h3 className="text-2xl font-bold mb-4">Smart Flashcards</h3>
+            <p className="opacity-70">
+              Create, customize, or auto-generate flashcards with our AI to
+              enhance your learning experience and master new concepts
+              efficiently.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="bg-[#4954E0] text-[#F1F1E8] rounded-3xl p-12 text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready to get started?</h2>
-          <p className="max-w-2xl mx-auto mb-8 opacity-90">
-            Join thousands of satisfied users who have transformed their digital
-            experience with our platform.
-          </p>
-          <button className="bg-[#F1F1E8] text-[#4954E0] px-8 py-3 rounded-full font-medium hover:opacity-90 transition-opacity">
-            Start Your Free Trial
-          </button>
+      {/* Testemonicals Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            What Our Customers Say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-blue-50 border border-blue-100 p-6 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <img
+                  src="/AnantGump.png"
+                  alt="Anant Raj"
+                  className="w-12 h-12 rounded-full object-cover mr-4"
+                />
+                <div>
+                  <h4 className="font-semibold">Anant Raj</h4>
+                  <p className="text-sm text-blue-600">
+                    CEO/Founder of GumpinIt
+                  </p>
+                </div>
+              </div>
+              <p className="italic text-blue-800">
+                Chalkpad transformed how our team collaborates. The intuitive
+                interface and powerful features have increased our productivity
+                by 30%.
+              </p>
+            </div>
+            <div className="bg-blue-50 border border-blue-100 p-6 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <img
+                  src="/tyler.webp"
+                  alt="Mark Peterson"
+                  className="w-12 h-12 rounded-full object-cover mr-4"
+                />
+                <div>
+                  <h4 className="font-semibold">Tyler Blevins</h4>
+                  <p className="text-sm text-blue-600">
+                    Product Manager at LowTaperFade
+                  </p>
+                </div>
+              </div>
+              <p className="italic text-blue-800">
+                We have tried numerous solutions before finding Chalkpad.
+                Nothing else comes close to its combination of flexibility and
+                ease of use.
+              </p>
+            </div>
+          </div>
+          <div className="text-center mt-10">
+            <Link
+              href="/testimonials"
+              className="text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Read More Testimonials →
+            </Link>
+          </div>
         </div>
       </section>
 
