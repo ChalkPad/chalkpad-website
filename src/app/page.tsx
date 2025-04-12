@@ -35,7 +35,7 @@ export default function Home() {
             and provides tailored guidance the moment you need it.
           </p>
           <div className="flex space-x-4 pt-4">
-            <Link href="/main/home">
+            <Link href="/auth/login">
               <button className="bg-[#4954E0] text-[#F1F1E8] px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-all">
                 Get Started
               </button>
