@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { BaseNavbar } from "@/components/navbar"; // Import your navbar component
 
 // Initialize the Geist fonts
 const geistSans = Geist({

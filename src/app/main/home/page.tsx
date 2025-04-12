@@ -8,14 +8,16 @@ export default function Dashboard() {
       {/* Sidebar */}
       <aside className="w-64 bg-white p-6 hidden md:flex flex-col h-screen sticky top-0">
         <div className="flex items-center mb-10">
-          <Image
-            src="/ChalkPadLogoClear.png"
-            alt="Chalkpad Logo"
-            width={65}
-            height={65}
-            className="mr-2"
-          />
-          <span className="text-2xl font-bold">Chalkpad</span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/ChalkPadLogoClear.png"
+              alt="Chalkpad Logo"
+              width={65}
+              height={65}
+              className="mr-2"
+            />
+            <span className="text-2xl font-bold">Chalkpad</span>
+          </Link>
         </div>
 
         <nav className="flex-1">
