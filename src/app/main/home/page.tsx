@@ -40,7 +40,7 @@ export default function Dashboard() {
             </li>
             <li>
               <Link
-                href="/flashcards"
+                href="/main/create"
                 className="flex items-center p-3 rounded-lg hover:bg-[#4954E0] hover:bg-opacity-10 transition-all"
               >
                 <svg
@@ -52,42 +52,6 @@ export default function Dashboard() {
                   <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
                 </svg>
                 Flashcards
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/notes"
-                className="flex items-center p-3 rounded-lg hover:bg-[#4954E0] hover:bg-opacity-10 transition-all"
-              >
-                <svg
-                  className="w-5 h-5 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"></path>
-                </svg>
-                Notes
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/practice"
-                className="flex items-center p-3 rounded-lg hover:bg-[#4954E0] hover:bg-opacity-10 transition-all"
-              >
-                <svg
-                  className="w-5 h-5 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Practice
               </Link>
             </li>
           </ul>
@@ -121,7 +85,7 @@ export default function Dashboard() {
               height={32}
               className="mr-2"
             />
-            <span className="text-xl font-bold">Chalkpad</span>
+            <span className="text-xl font-bold">ChalkPad</span>
           </div>
           <button className="p-2">
             <svg
@@ -230,7 +194,7 @@ export default function Dashboard() {
               </p>
               <Link
                 href="/main/chat"
-                className="inline-flex items-center font-medium"
+                className="inline-flex items-center py-2 px-4 bg-[#4954E0]/10 rounded-lg font-medium text-[#4954E0] hover:bg-[#4954E0]/20 transition-all group font-satoshi"
               >
                 Start Tutoring Session
                 <svg
