@@ -90,12 +90,12 @@ export function BaseNavbar({ logoLink, menuItems, profileItems }: BaseNavbarProp
         {logoLink ? (
           <Link href={logoLink}>
             <h1 className="text-lg font-semibold text-primary mr-6 whitespace-nowrap">
-              <span className="text-black">NHS</span> TutorMe
+              <span className="text-black">ChalkPad</span> 
             </h1>
           </Link>
         ) : (
           <h1 className="text-lg font-semibold text-primary mr-6 whitespace-nowrap">
-            <span className="text-black">NHS</span> TutorMe
+            <span className="text-black">ChalkPad</span> 
           </h1>
         )}
 
